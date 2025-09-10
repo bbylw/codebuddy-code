@@ -10,11 +10,9 @@ MCP (Model Context Protocol) 是一个开放标准，允许 CodeBuddy 与外部�
 MCP 服务器是提供工具和资源的独立进程，CodeBuddy 通过不同的传输协议与这些服务器通信。
 
 ### 传输类型
-- **STDIO**: 通过标准输入输出与本地进程通信 ✅ **已支持**
-- **SSE**: 通过 Server-Sent Events 与远程服务通信 🚧 **开发中**
-- **HTTP**: 通过 HTTP 流式传输与远程服务通信 🚧 **开发中**
-
-> **注意**: 当前版本仅支持 STDIO 传输类型，SSE 和 HTTP 传输类型正在开发中，敬请期待。
+- **STDIO**: 通过标准输入输出与本地进程通信
+- **SSE**: 通过 Server-Sent Events 与远程服务通信
+- **HTTP**: 通过 HTTP 流式传输与远程服务通信
 
 ### 配置作用域
 - **user**: 全局用户配置，应用于所有项目
@@ -63,7 +61,7 @@ MCP 服务器是提供工具和资源的独立进程，CodeBuddy 通过不同的
 
 ### 添加 MCP 服务器
 
-#### STDIO 服务器 ✅
+#### STDIO 服务器
 ```bash
 # 添加本地可执行文件
 codebuddy mcp add my-tool --command /path/to/tool --args arg1 arg2 --scope user
@@ -72,15 +70,15 @@ codebuddy mcp add my-tool --command /path/to/tool --args arg1 arg2 --scope user
 codebuddy mcp add python-tool --command python --args /path/to/script.py --scope project
 ```
 
-#### SSE 服务器 🚧 (开发中)
+#### SSE 服务器
 ```bash
-# 添加 SSE 服务器 (暂不支持)
+# 添加 SSE 服务器
 codebuddy mcp add sse-server --url https://example.com/mcp/sse --scope user
 ```
 
-#### HTTP 服务器 🚧 (开发中)
+#### HTTP 服务器
 ```bash
-# 添加 HTTP 流式服务器 (暂不支持)
+# 添加 HTTP 流式服务器
 codebuddy mcp add http-server --url https://example.com/mcp/http --scope project
 ```
 
