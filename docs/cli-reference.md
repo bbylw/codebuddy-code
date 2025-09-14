@@ -51,6 +51,8 @@ CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互
 ### 安全和权限
 ```bash
 --dangerously-skip-permissions        绕过所有权限检查。仅推荐用于无网络访问的沙箱
+--permission-mode <mode>              权限模式: "acceptEdits", "bypassPermissions", 
+                                      "default", "plan"
 --allowedTools <tools...>             允许的工具列表 (如 "Bash(git:*) Edit")
 --disallowedTools <tools...>          禁止的工具列表 (如 "Bash(git:*) Edit")
 --add-dir <directories...>            允许工具访问的额外目录
