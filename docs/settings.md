@@ -129,6 +129,22 @@ CodeBuddy Code 使用细粒度权限系统控制工具访问：
 | `plan` | 仅制定计划，不执行操作 |
 | `bypassPermissions` | 绕过权限检查（谨慎使用） |
 
+#### 动态权限模式管理
+
+从当前版本开始，权限模式支持会话级动态切换：
+
+- **CLI 启动时设置**: 使用 `--permission-mode` 参数指定初始权限模式
+- **运行时动态更新**: 权限模式会在会话中动态更新，并在UI中实时显示当前状态
+- **优先级顺序**: CLI参数 > 设置文件中的 `defaultMode` > 系统默认值(`default`)
+- **UI 状态显示**: 当权限模式不是 `default` 时，会在界面中显示当前权限模式状态
+
+```bash
+# 启动时设置权限模式
+codebuddy --permission-mode acceptEdits
+
+# 权限模式会在会话中保持，并可通过UI查看当前状态
+```
+
 ### MCP 服务器管理
 
 控制 Model Context Protocol (MCP) 服务器的启用和禁用：
