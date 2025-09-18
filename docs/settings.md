@@ -108,6 +108,11 @@ CodeBuddy Code 使用细粒度权限系统控制工具访问：
       "Bash(npm:install,npm:test)",    // 允许特定 npm 命令
       "Edit(src/**/*.js)"              // 只允许编辑 src 目录下的 JS 文件
     ],
+    "ask": [
+      "Bash(curl:*)",                  // 询问后允许 curl 命令
+      "WebFetch",                      // 询问后允许网络请求
+      "Bash(docker:*)"                 // 询问后允许 Docker 命令
+    ],
     "deny": [
       "Bash(rm:*)",                    // 禁止删除命令
       "Bash(sudo:*)",                  // 禁止 sudo 命令
@@ -344,6 +349,7 @@ codebuddy config get permissions
   "model": "gpt-5",
   "permissions": {
     "allow": ["Read", "Edit", "Bash(git:*)", "Bash(npm:*)"],
+    "ask": ["WebFetch", "Bash(docker:*)"],
     "deny": ["Bash(rm:*)", "Bash(sudo:*)"]
   },
   "env": {
@@ -370,11 +376,11 @@ codebuddy config get permissions
 {
   "permissions": {
     "allow": ["Read", "Edit(src/**)", "Bash(git:status,git:diff)"],
+    "ask": ["WebFetch", "Bash(curl:*)"],
     "deny": [
       "Edit(**/*.env)",
       "Edit(**/*.key)",
       "Edit(**/*.pem)",
-      "Bash(curl:*)",
       "Bash(wget:*)",
       "Read(/etc/**)",
       "Read(~/.ssh/**)"
