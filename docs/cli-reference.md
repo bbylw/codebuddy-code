@@ -12,6 +12,8 @@ codebuddy [options] [command] [prompt]
 
 CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互式输出。
 
+> **重要提示**：当使用 `-p/--print` 参数时，如果需要调用需要授权的工具（如文件操作、网络请求等），必须明确指定 `--dangerously-skip-permissions` 参数，否则会被权限检查阻止。
+
 ## 📋 全局选项
 
 ### 基础选项
@@ -105,6 +107,10 @@ codebuddy -p "生成大量代码" --output-format stream-json
 
 # 管道输入
 cat error.log | codebuddy -p "分析这些错误日志"
+
+# 需要工具授权的操作（必须添加 --dangerously-skip-permissions）
+codebuddy -p "修改这个文件" --dangerously-skip-permissions
+codebuddy -p "运行测试命令" --dangerously-skip-permissions
 ```
 
 ### 模型和回退
@@ -181,19 +187,21 @@ codebuddy -p "生成长代码" --output-format stream-json
 
 ## 🔒 安全和权限控制
 
+> **关键说明**：在使用 `-p/--print` 参数进行单次执行时，任何需要工具授权的操作都必须明确添加 `--dangerously-skip-permissions` 参数，否则会被权限检查阻止。
+
 ### 工具权限控制
 ```bash
 # 只允许特定工具
-codebuddy --allowedTools "Read Edit" -p "修改文件"
+codebuddy --allowedTools "Read Edit" -p "修改文件" --dangerously-skip-permissions
 
 # 禁止特定工具
 codebuddy --disallowedTools "Bash" -p "分析代码"
 
 # 允许特定Git操作
-codebuddy --allowedTools "Bash(git:status,git:diff)" -p "检查Git状态"
+codebuddy --allowedTools "Bash(git:status,git:diff)" -p "检查Git状态" --dangerously-skip-permissions
 
-# 跳过权限检查 (谨慎使用)
-codebuddy --dangerously-skip-permissions -p "执行操作"
+# 跳过权限检查 (谨慎使用，-p 模式下的必需参数)
+codebuddy --dangerously-skip-permissions -p "执行需要授权的操作"
 ```
 
 ### 目录访问控制
@@ -209,8 +217,8 @@ codebuddy --add-dir /path/to/project --add-dir /tmp -p "处理文件"
 # 代码审查 (管道输入)
 git diff | codebuddy -p "审查这些代码变更"
 
-# 生成提交信息
-git diff --cached | codebuddy -p "生成提交信息" --output-format text
+# 生成提交信息 (需要授权)
+git diff --cached | codebuddy -p "生成提交信息" --output-format text --dangerously-skip-permissions
 
 # 错误日志分析
 tail -f error.log | codebuddy -p "实时分析错误" --input-format stream-json
@@ -288,8 +296,8 @@ codebuddy --debug --verbose -p "完整调试信息"
 
 ### 常见问题解决
 ```bash
-# 权限问题
-codebuddy --allowedTools "Read Edit Bash" -p "需要多种工具的操作"
+# 权限问题 (必须添加 --dangerously-skip-permissions)
+codebuddy --allowedTools "Read Edit Bash" -p "需要多种工具的操作" --dangerously-skip-permissions
 
 # 会话问题
 codebuddy --session-id "new-uuid" -p "开始新会话"
