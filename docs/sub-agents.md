@@ -25,6 +25,7 @@ name: "my-agent"
 description: "负责代码审阅与建议"
 model: "gpt-4o"
 tools: "bash,fs,github"
+color: "#4A90E2"
 ---
 
 这里是该子代理的系统指令与工作说明……
@@ -35,6 +36,7 @@ tools: "bash,fs,github"
 - description：可选。简要描述。系统会自动附加来源标签 (project|user 以及子目录路径)
 - model：可选。当前实现会解析但不强制使用，按产品配置可能由上层决定
 - tools：可选。逗号分隔列表。当未指定时，会继承当前默认代理的工具集合。内部会自动移除 task 工具
+- color：可选。指定代理在界面中显示的颜色标识（如 "#FF5733"）。如未指定，系统会基于代理名称自动生成一致的颜色
 
 ## 指令内容
 
