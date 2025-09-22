@@ -179,6 +179,7 @@ CodeBuddy Code 支持通过环境变量进行配置。
 | 环境变量 | 描述 |
 |----------|------|
 | `CODEBUDDY_AUTH_TOKEN` | CodeBuddy 认证令牌 |
+| `CODEBUDDY_CUSTOM_HEADERS` | 自定义 HTTP 请求头，支持多行格式 |
 
 ### 运行环境
 
@@ -192,6 +193,10 @@ CodeBuddy Code 支持通过环境变量进行配置。
 ```bash
 # 设置认证令牌
 export CODEBUDDY_AUTH_TOKEN="your-auth-token"
+
+# 设置自定义请求头
+export CODEBUDDY_CUSTOM_HEADERS="X-Custom-Header: value1
+X-Another-Header: value2"
 
 # 启动 CodeBuddy
 codebuddy
