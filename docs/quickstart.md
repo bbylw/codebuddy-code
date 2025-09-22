@@ -79,27 +79,29 @@ codebuddy
 
 ```bash
 # 直接提问
-codebuddy "优化这个 SQL 查询的性能"
+codebuddy -p "优化这个 SQL 查询的性能"
 
 # 管道输入
-cat error.log | codebuddy "分析这些错误日志"
+cat error.log | codebuddy -p "分析这些错误日志"
 
-# 文件分析
-codebuddy "审查 src/utils.js 的代码质量"
+# 文件分析（需要授权时必须添加 --dangerously-skip-permissions）
+codebuddy -p "审查 src/utils.js 的代码质量" --dangerously-skip-permissions
 ```
+
+> **重要提示**：使用 `-p/--print` 参数进行单次执行时，如果操作需要访问文件、执行命令等授权操作，必须添加 `--dangerously-skip-permissions` 参数。
 
 ### 项目级操作
 处理复杂的跨文件任务：
 
 ```bash
-# 项目重构
-codebuddy "将所有组件从 class 组件迁移到函数组件"
+# 项目重构（需要文件操作授权）
+codebuddy -p "将所有组件从 class 组件迁移到函数组件" --dangerously-skip-permissions
 
-# 代码规范
-codebuddy "检查整个项目的 TypeScript 类型定义"
+# 代码规范（需要文件读取授权）
+codebuddy -p "检查整个项目的 TypeScript 类型定义" --dangerously-skip-permissions
 
-# 测试覆盖
-codebuddy "为 services 目录下的所有文件添加单元测试"
+# 测试覆盖（需要文件操作授权）
+codebuddy -p "为 services 目录下的所有文件添加单元测试" --dangerously-skip-permissions
 ```
 
 ### 快捷键
