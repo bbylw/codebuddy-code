@@ -49,9 +49,11 @@ cd my-project
 
 # 启动 CodeBuddy
 codebuddy
+cbc
 
 # 或直接提问
 codebuddy "帮我优化这个函数的性能"
+cbc "帮我优化这个函数的性能"
 ```
 
 ## 下一步操作
