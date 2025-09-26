@@ -8,6 +8,7 @@ CodeBuddy Code 命令行工具的完整参考手册，基于真实命令结构�
 
 ```bash
 codebuddy [options] [command] [prompt]
+cbc [options] [command] [prompt]
 ```
 
 CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互式输出。
