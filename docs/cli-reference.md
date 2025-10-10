@@ -21,7 +21,8 @@ CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互
 ```bash
 -V, --version                         输出版本号
 -h, --help                            显示帮助信息
--d, --debug                           启用调试模式 (默认: false)
+-d, --debug [filter]                  启用调试模式，支持可选的类别过滤
+                                      (如 "api,hooks" 或 "!statsig,!file") (默认: false)
     --verbose                         覆盖配置中的详细模式设置 (默认: false)
 -p, --print                           打印响应并退出 (适用于管道) (默认: false)
 ```
