@@ -34,6 +34,7 @@ CodeBuddy Code 使用分层配置系统，设置按以下优先级合并（后�
 {
   "model": "gpt-5",
   "cleanupPeriodDays": 30,
+  "theme": "dark",
   "env": {
     "NODE_ENV": "development",
     "DEBUG": "true"
@@ -64,6 +65,7 @@ CodeBuddy Code 使用分层配置系统，设置按以下优先级合并（后�
 | `model` | string | - | 默认 AI 模型 (`gpt-5`, `gpt-4`) |
 | `cleanupPeriodDays` | number | 30 | 本地聊天记录保留天数 |
 | `includeCoAuthoredBy` | boolean | false | Git 提交是否包含 co-authored-by |
+| `theme` | string | `dark` | 界面主题 (`light`, `dark`) |
 | `autoCompactEnabled` | boolean | - | 开启自动压缩功能 |
 | `autoUpdates` | boolean | - | 自动更新设置 |
 | `apiKeyHelper` | string | - | 获取认证密钥的脚本路径 |
@@ -178,18 +180,28 @@ CodeBuddy Code 支持通过环境变量进行配置。
 
 | 环境变量 | 描述 |
 |----------|------|
-| `CODEBUDDY_AUTH_TOKEN` | CodeBuddy 认证令牌 |
-| `CODEBUDDY_API_KEY` | API 密钥，用于请求认证 |
-| `CODEBUDDY_CUSTOM_HEADERS` | 自定义 HTTP 请求头，支持多行格式 |
+| `CODEBUDDY_AUTH_TOKEN` | CodeBuddy 认证令牌,用于所有接口调用(包括模型接口、Token 刷新接口、账单接口等) |
+| `CODEBUDDY_API_KEY` | API 密钥,仅用于模型接口调用。配置后将跳过 Token 刷新、账单查询等其他接口调用,通常与 `CODEBUDDY_BASE_URL` 配合使用以接入自定义模型服务 |
+| `CODEBUDDY_CUSTOM_HEADERS` | 自定义 HTTP 请求头,支持多行格式 |
 
 ### 运行环境
 
 | 环境变量 | 描述 |
 |----------|------|
+| `CODEBUDDY_BASE_URL` | 自定义模型服务的基础 URL 地址,通常与 `CODEBUDDY_API_KEY` 配合使用。要求:兼容 OpenAI 接口协议 |
 | `CODEBUDDY_INTERNET_ENVIRONMENT` | 网络环境配置 |
 | `ENV_PRODUCT_CLI_ACCOUNT_TYPE` | CLI 账户类型 |
 
+### 代理配置
+
+| 环境变量 | 描述 |
+|----------|------|
+| `HTTP_PROXY` | HTTP 代理服务器地址（例如: `http://proxy.example.com:8080`） |
+| `HTTPS_PROXY` | HTTPS 代理服务器地址（例如: `https://proxy.example.com:8080`） |
+
 ### 使用示例
+
+#### 基础认证配置
 
 ```bash
 # 设置认证令牌
@@ -198,6 +210,10 @@ export CODEBUDDY_AUTH_TOKEN="your-auth-token"
 # 设置 API 密钥
 export CODEBUDDY_API_KEY="your-api-key"
 
+# 设置代理服务器
+export HTTP_PROXY="http://proxy.example.com:8080"
+export HTTPS_PROXY="https://proxy.example.com:8080"
+
 # 设置自定义请求头
 export CODEBUDDY_CUSTOM_HEADERS="X-Custom-Header: value1
 X-Another-Header: value2"
@@ -205,6 +221,26 @@ X-Another-Header: value2"
 # 启动 CodeBuddy
 codebuddy
 ```
+
+#### 使用 OpenRouter 自定义模型
+
+```bash
+# 使用 OpenRouter 服务,一行命令启动自定义模型
+CODEBUDDY_API_KEY=sk-or-v1-9a951951428092casdffs702bsdf2513c292680cd621b9d0e39cf \
+CODEBUDDY_BASE_URL=https://openrouter.ai/api/v1 \
+codebuddy --model openai/gpt-5-codex
+
+# 或者先设置环境变量
+export CODEBUDDY_API_KEY="sk-or-v1-your-openrouter-api-key"
+export CODEBUDDY_BASE_URL="https://openrouter.ai/api/v1"
+codebuddy --model openai/gpt-5-codex
+```
+
+> **说明**: 当配置 `CODEBUDDY_API_KEY` 后:
+> - 仅会用于模型接口调用
+> - 不再调用 Token 刷新接口、账单接口等其他服务接口
+> - 通常需要与 `CODEBUDDY_BASE_URL` 配合使用
+> - `CODEBUDDY_BASE_URL` 配置的模型服务需兼容 OpenAI 接口协议
 
 ## 🔧 配置管理命令
 
@@ -281,6 +317,7 @@ codebuddy config remove model
 |--------|------|------|
 | `model` | string | AI 模型设置 |
 | `cleanupPeriodDays` | number | 本地聊天记录保留天数 |
+| `theme` | string | 界面主题设置 |
 | `env` | object | 环境变量 |
 | `includeCoAuthoredBy` | boolean | Git 提交是否包含 co-authored-by |
 | `permissions` | object | 权限配置 |
@@ -299,6 +336,7 @@ codebuddy config remove model
 |--------|------|------|
 | `permissions` | object | 权限配置 |
 | `model` | string | AI 模型设置 |
+| `theme` | string | 界面主题设置 |
 | `env` | object | 环境变量 |
 | `apiKeyHelper` | string | API 密钥助手脚本路径 |
 
