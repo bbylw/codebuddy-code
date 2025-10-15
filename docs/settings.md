@@ -68,6 +68,7 @@ CodeBuddy Code 使用分层配置系统，设置按以下优先级合并（后�
 | `theme` | string | `dark` | 界面主题 (`light`, `dark`) |
 | `autoCompactEnabled` | boolean | - | 开启自动压缩功能 |
 | `autoUpdates` | boolean | - | 自动更新设置 |
+| `alwaysThinkingEnabled` | boolean | true | 始终启用思考模式 |
 | `apiKeyHelper` | string | - | 获取认证密钥的脚本路径 |
 
 ### 环境变量配置
@@ -328,6 +329,7 @@ codebuddy config remove model
 | `disabledMcpjsonServers` | string[] | 禁用的 MCP 服务器列表 |
 | `autoCompactEnabled` | boolean | 自动压缩功能 |
 | `autoUpdates` | boolean | 自动更新设置 |
+| `alwaysThinkingEnabled` | boolean | 始终启用思考模式 |
 | `apiKeyHelper` | string | API 密钥助手脚本路径 |
 
 #### 项目配置键（可在项目级设置）
