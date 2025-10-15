@@ -63,6 +63,12 @@ CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互
 --add-dir <directories...>            允许工具访问的额外目录
 ```
 
+### 网络和请求
+```bash
+-H, --header <headers...>             自定义HTTP请求头 (格式: "Header-Key: Header-Value")
+                                      可多次使用以设置多个请求头
+```
+
 ### MCP 集成
 ```bash
 --mcp-config <fileOrString>           从JSON文件或字符串加载MCP服务器
@@ -122,6 +128,9 @@ codebuddy --model gpt-5 -p "复杂的代码分析任务"
 
 # 设置回退模型
 codebuddy --model gpt-5 --fallback-model gpt-4 -p "查询"
+
+# 使用自定义请求头
+codebuddy -H "Authorization: Bearer token123" -H "X-Custom-Header: value" -p "查询"
 ```
 
 ### 配置命令 (config)
