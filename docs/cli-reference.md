@@ -67,7 +67,90 @@ CodeBuddy Code 默认启动交互式会话，使用 `-p/--print` 进行非交互
 ```bash
 -H, --header <headers...>             自定义HTTP请求头 (格式: "Header-Key: Header-Value")
                                       可多次使用以设置多个请求头
+-s, --serve                           启动 HTTP 服务器模式 (非交互式) (默认: false)
+    --port <number>                   HTTP 服务器端口 (默认: 自动分配)
+    --host <string>                   HTTP 服务器绑定地址 (默认: 127.0.0.1)
 ```
+
+### 沙箱模式 (Beta)
+
+> ⚠️ **Beta 功能**: Sandbox 功能目前处于 Beta 阶段。
+> 📘 **详细文档**: 查看 [Sandbox 沙箱使用指南](./sandbox.md) 获取完整的沙箱使用说明、最佳实践和故障排查。
+
+```bash
+--sandbox [url]                       在沙箱中运行 CodeBuddy:
+                                      - 不带参数或 "container": 使用容器 (Docker/Podman)
+                                      - "seatbelt": 使用 macOS Seatbelt (仅 macOS)
+                                      - 提供完整的 E2B API URL: 使用云端沙箱 (如 https://api.e2b.dev)
+--sandbox-upload-dir                  上传当前工作目录到沙箱 (仅 E2B) (默认: false)
+--sandbox-new                         强制创建新沙箱 (忽略缓存的沙箱) (默认: false)
+--sandbox-id <id>                     连接到指定的沙箱 ID 或别名
+                                      - 已存在的别名: 自动复用对应的沙箱
+                                      - E2B 真实 ID: 直接连接
+                                      - 新名称: 创建新沙箱并保存为别名
+--sandbox-kill                        退出时终止沙箱 (默认: 保持运行以便复用) (默认: false)
+--sandbox-profile <profile>           Seatbelt 配置文件 (仅 Seatbelt):
+                                      permissive-open (默认), permissive-closed,
+                                      restrictive-open, restrictive-closed
+```
+
+#### 沙箱使用示例
+```bash
+# macOS Seatbelt 沙箱 (轻量快速, 仅 macOS)
+codebuddy --sandbox seatbelt "分析这个项目"
+codebuddy --sandbox seatbelt --sandbox-profile restrictive-closed "高安全任务"
+
+# 容器沙箱 (Docker/Podman, 自动挂载当前目录)
+codebuddy --sandbox "分析这个项目"              # 等价于 --sandbox container
+codebuddy --sandbox container "分析这个项目"
+
+# E2B 云端沙箱 (自动复用)
+codebuddy --sandbox https://api.e2b.dev "创建 Python web 应用"
+codebuddy --sandbox https://api.e2b.dev --sandbox-upload-dir "分析代码"
+
+# 强制创建新沙箱
+codebuddy --sandbox --sandbox-new "从头开始"
+
+# 连接到指定沙箱 (真实 ID)
+codebuddy --sandbox --sandbox-id sb_abc123 "继续工作"
+
+# 使用别名 (自动创建和复用)
+codebuddy --sandbox https://api.e2b.dev --sandbox-id user-123 -p "任务"  # 首次创建
+codebuddy --sandbox https://api.e2b.dev --sandbox-id user-123 -p "任务"  # 自动复用
+
+# 退出时清理沙箱
+codebuddy --sandbox --sandbox-kill "临时测试"
+```
+
+#### 沙箱环境变量
+```bash
+E2B_API_KEY                          E2B API 密钥 (E2B 沙箱必需)
+E2B_TEMPLATE                         E2B 模板 ID (默认: base)
+CODEBUDDY_SANDBOX_IMAGE              自定义 Docker 镜像 (容器沙箱，默认: node:20-alpine)
+```
+
+#### E2B 模板说明
+
+**默认模板（base）**：
+- E2B 官方基础镜像
+- 启动时自动安装 CodeBuddy CLI
+- 包含 Node.js、Python 等常用开发工具
+
+**自定义模板**：
+你也可以创建预装 CodeBuddy 的自定义模板以加快启动速度：
+
+```typescript
+import { Template } from '@e2b/code-interpreter';
+
+const template = Template()
+  .fromNodeImage('20')
+  .npmInstall(['@tencent-ai/codebuddy-code'], { g: true })
+  .apt(['git', 'python3', 'python3-pip']);  // 添加额外工具
+
+await Template.build(template, { alias: 'my-codebuddy-template' });
+```
+
+然后使用：`export E2B_TEMPLATE=my-codebuddy-template`
 
 ### MCP 集成
 ```bash
@@ -161,18 +244,34 @@ codebuddy mcp add-json <name> <json>
 
 ## 🛠️ 实用命令
 
+### HTTP 服务器模式
+```bash
+# 启动 HTTP 服务器(自动分配端口)
+codebuddy --serve
+
+# 指定端口启动服务器
+codebuddy --serve --port 3000
+
+# 自定义绑定地址和端口
+codebuddy --serve --host 0.0.0.0 --port 8080
+
+# 使用 npm script 启动
+npm run serve          # 自动分配端口
+npm run serve:port     # 固定 3000 端口
+```
+
 ### 安装和更新
 ```bash
-# 安装（当前不支持，执行会提示不支持）
+# 安装(当前不支持,执行会提示不支持)
 codebuddy install [options] [target]
 
-# 检查更新（支持）
+# 检查更新(支持)
 codebuddy update
 
-# 从全局npm安装迁移（当前不支持，执行会提示不支持）
+# 从全局npm安装迁移(当前不支持,执行会提示不支持)
 codebuddy migrate-installer
 
-# 健康检查（当前不支持，执行会提示不支持）
+# 健康检查(当前不支持,执行会提示不支持)
 codebuddy doctor
 ```
 
